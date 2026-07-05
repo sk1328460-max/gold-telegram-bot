@@ -1,15 +1,16 @@
 import os
-import requests
+from telegram import Update
+from telegram.ext import Application, CommandHandler, ContextTypes
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-CHAT_ID = os.getenv("CHAT_ID")
 
-url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        "✅ Gold Telegram Bot ишга тушди!\n\n"
+        "M15 сигналлари тез орада қўшилади."
+    )
 
-data = {
-    "chat_id": CHAT_ID,
-    "text": "✅ Gold Telegram Bot ишга тушди!"
-}
+app = Application.builder().token(BOT_TOKEN).build()
+app.add_handler(CommandHandler("start", start))
 
-requests.post(url, data=data)
-print("Message sent")
+app.run_polling()
